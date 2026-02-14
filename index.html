@@ -156,7 +156,8 @@
 
     <!-- Success Screen -->
     <div class="container success-container" id="successScreen">
-        <div class="emoji-bear">🧸❤️💑</div>
+        <!-- Changed sticker to Bear + Man/Woman Kissing -->
+        <div class="emoji-bear">🧸 👩‍❤️‍💋‍👨</div>
         <div class="success-text">Yay! I love you too!</div>
         <div style="font-size: 1.2rem; margin-top: 15px; color: #e91e63;">Happy Valentine's Day!</div>
     </div>
@@ -191,9 +192,6 @@
             // Change NO button text
             phraseIndex = (phraseIndex + 1) % phrases.length;
             noBtn.innerText = phrases[phraseIndex];
-            
-            // Optional: Move NO button slightly to make it chaotic (fun factor)
-            // But main request was "yes getting bigger", so we focus on that.
         });
 
         yesBtn.addEventListener('click', function() {
