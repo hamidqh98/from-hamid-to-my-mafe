@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine Mafe</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            background-color: #ffc0cb; /* Pink background */
+            background-image: radial-gradient(circle, #ffc0cb 0%, #ffb6c1 100%);
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+        }
+
+        .container {
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #d32f2f;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            line-height: 1.2;
+            text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.5);
+        }
+
+        .question {
+            color: #e91e63;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        button {
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #yesBtn {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1.2rem;
+            padding: 12px 30px;
+            font-weight: bold;
+            z-index: 20;
+        }
+
+        #yesBtn:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        #noBtn {
+            background-color: #f44336;
+            color: white;
+            font-size: 1.2rem;
+            padding: 12px 30px;
+            font-weight: bold;
+        }
+
+        #noBtn:active {
+            transform: scale(0.95);
+        }
+
+        /* Success Screen */
+        .success-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .emoji-bear {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+
+        .success-text {
+            font-size: 2rem;
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+        /* Background Hearts Animation */
+        .bg-heart {
+            position: absolute;
+            color: #fff;
+            opacity: 0.3;
+            top: -10%;
+            animation: fall linear infinite;
+            z-index: 1;
+            user-select: none;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); }
+            100% { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Falling hearts background -->
+    <div id="heartsContainer"></div>
+
+    <!-- Main Question Screen -->
+    <div class="container" id="mainScreen">
+        <h1>Happy Valentine Beautiful Mafe 💖</h1>
+        <div class="question">Do you love me?</div>
+        
+        <div class="buttons">
+            <button id="yesBtn">YES</button>
+            <button id="noBtn">NO</button>
+        </div>
+    </div>
+
+    <!-- Success Screen -->
+    <div class="container success-container" id="successScreen">
+        <div class="emoji-bear">🧸❤️💑</div>
+        <div class="success-text">Yay! I love you too!</div>
+        <div style="font-size: 1.2rem; margin-top: 15px; color: #e91e63;">Happy Valentine's Day!</div>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const mainScreen = document.getElementById('mainScreen');
+        const successScreen = document.getElementById('successScreen');
+        const body = document.body;
+
+        let yesScale = 1;
+        const phrases = [
+            "NO", 
+            "Are you sure?", 
+            "Really?", 
+            "Think again!", 
+            "Last chance!", 
+            "Don't do this!", 
+            "PLEASE 🥺", 
+            "You are breaking my heart 💔",
+            "I'm gonna cry 😭"
+        ];
+        let phraseIndex = 0;
+
+        // Interaction logic
+        noBtn.addEventListener('click', function() {
+            // Make YES button bigger
+            yesScale += 0.5;
+            yesBtn.style.transform = `scale(${yesScale})`;
+            
+            // Change NO button text
+            phraseIndex = (phraseIndex + 1) % phrases.length;
+            noBtn.innerText = phrases[phraseIndex];
+            
+            // Optional: Move NO button slightly to make it chaotic (fun factor)
+            // But main request was "yes getting bigger", so we focus on that.
+        });
+
+        yesBtn.addEventListener('click', function() {
+            mainScreen.style.display = 'none';
+            successScreen.style.display = 'flex';
+            startConfetti();
+        });
+
+        // Background falling hearts logic
+        function createFallingHearts() {
+            const heartsContainer = document.getElementById('heartsContainer');
+            const heartSymbols = ['❤️', '💖', '💕', '💗'];
+            
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('bg-heart');
+                heart.innerText = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                
+                // Random position and size
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+                heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+                
+                heartsContainer.appendChild(heart);
+
+                // Cleanup
+                setTimeout(() => {
+                    heart.remove();
+                }, 5000);
+            }, 300);
+        }
+
+        // Celebrate Confetti when YES is clicked
+        function startConfetti() {
+            setInterval(() => {
+                const confetti = document.createElement('div');
+                confetti.innerHTML = '🥰';
+                confetti.style.position = 'fixed';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-50px';
+                confetti.style.fontSize = '30px';
+                confetti.style.zIndex = '100';
+                confetti.style.transition = 'top 3s linear, opacity 3s ease';
+                document.body.appendChild(confetti);
+
+                // Trigger animation
+                setTimeout(() => {
+                    confetti.style.top = '110vh';
+                    confetti.style.opacity = '0';
+                }, 50);
+
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }, 100);
+        }
+
+        // Initialize background animation
+        createFallingHearts();
+
+    </script>
+</body>
+</html>
